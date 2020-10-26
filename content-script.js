@@ -49,7 +49,9 @@ document.addEventListener('DOMContentLoaded', function()
             images1.push(s);
         });
 
-        return {'covers': images, 'shows': images1};
+        const productID = window.location.href.match(/\/(\d+).html/)[1];
+
+        return {'covers': images, 'shows': images1, 'productId': productID };
         
     }
 

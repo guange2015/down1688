@@ -25,15 +25,49 @@ chrome.runtime.onInstalled.addListener(function() {
 
 
 
-  function downloadFile(datas){
-    for(var i in datas){
+  function downloadFile(data, type){
+
+    if(type=='all' || type=='covers'){
+      for(var i in data.covers){
+        const url = data.covers[i];
+        const ss = url.split('/');
+        const filename = ss[ss.length-1];
+  
+        console.log('url: '+url);
+        console.log('ss: '+ss);
+        console.log('filename: '+filename);
+  
+  
+        chrome.downloads.download({
+          url: url,
+          filename: `${data.productId}/covers/${filename}`,
+          saveAs : false,
+          conflictAction : "overwrite"
+        });
+      }
+    }
+    
+
+    if(type=='all' || type=='shows'){
+    for(var i in data.shows){
+
+      const url = data.shows[i];
+      const ss = url.split('/');
+      const filename = ss[ss.length-1];
+
+      console.log('url: '+url);
+      console.log('ss: '+ss);
+      console.log('filename: '+filename);
+
+
       chrome.downloads.download({
-        url: datas[i],
-        // filename:f,
-        saveAs : !1,
+        url: url,
+        filename: `${data.productId}/shows/${filename}`,
+        saveAs : false,
         conflictAction : "overwrite"
       });
     }
+  }
 
     
   }
@@ -50,14 +84,13 @@ chrome.runtime.onInstalled.addListener(function() {
               {greeting: "hello"},
               function(response) {
                       console.log(response.farewell);
-                      downloadFile(response.farewell.covers);
+                      downloadFile(response.farewell, 'all');
           });
     });
   }
 
 
   function genericOnClick2(info){
-    console.log('genericOnClick');
     chrome.tabs.query(
       {active: true, currentWindow: true},
       function(tabs) {
@@ -66,18 +99,34 @@ chrome.runtime.onInstalled.addListener(function() {
               {greeting: "hello"},
               function(response) {
                       console.log(response.farewell);
-                      downloadFile(response.farewell.shows);
+                      downloadFile(response.farewell, 'covers');
           });
     });
   }
 
+  function genericOnClick3(info){
+    chrome.tabs.query(
+      {active: true, currentWindow: true},
+      function(tabs) {
+            chrome.tabs.sendMessage(
+              tabs[0].id,
+              {greeting: "hello"},
+              function(response) {
+                      console.log(response.farewell);
+                      downloadFile(response.farewell, 'shows');
+          });
+    });
+  }
 
-  var parent = chrome.contextMenus.create({"title": "1688下载器"});  
+  var parent = chrome.contextMenus.create({
+    "title": "1688下载器",
+    documentUrlPatterns: ['https://detail.1688.com/*']
+    });  
 
   chrome.contextMenus.create({
     id: 'sampleContextMenu1',
     "parentId": parent, 
-    title: '下载所有描述图片', // %s表示选中的文字
+    title: '下载所有图片', // %s表示选中的文字
     contexts: ['all'], // 只有当选中文字时才会出现此右键菜单
     onclick: genericOnClick
     
@@ -85,12 +134,23 @@ chrome.runtime.onInstalled.addListener(function() {
     console.log('contextMenus are create.');
 });
 
+  chrome.contextMenus.create({
+    id: 'sampleContextMenu2',
+    "parentId": parent, 
+    title: '下载所有描述图片', // %s表示选中的文字
+    contexts: ['all'], // 只有当选中文字时才会出现此右键菜单
+    onclick: genericOnClick2
+    
+  }, function () {
+    console.log('contextMenus are create.');
+});
+
 chrome.contextMenus.create({
-  id: 'sampleContextMenu2',
+  id: 'sampleContextMenu3',
   "parentId": parent, 
   title: '下载所有内容图片', // %s表示选中的文字
   contexts: ['all'], // 只有当选中文字时才会出现此右键菜单
-  onclick: genericOnClick2
+  onclick: genericOnClick3
   
 }, function () {
   console.log('contextMenus are create.');

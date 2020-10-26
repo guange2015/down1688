@@ -26,7 +26,7 @@
 	"content_scripts": 
 	[
 		{
-			"matches": ["<all_urls>"],
+			"matches": ["https://detail.1688.com/*"],
 			"js": ["jquery.min.js","content-script.js"],
 			"css": ["custom.css"],
 			"run_at": "document_start"
