@@ -27,6 +27,8 @@ chrome.runtime.onInstalled.addListener(function() {
 
   function downloadFile(data, type){
 
+    let seq = 1;
+
     if(type=='all' || type=='covers'){
       for(var i in data.covers){
         const url = data.covers[i];
@@ -36,18 +38,23 @@ chrome.runtime.onInstalled.addListener(function() {
         console.log('url: '+url);
         console.log('ss: '+ss);
         console.log('filename: '+filename);
+
+
+        const temps = filename.split('.');
+        const ext = filename.split('.')[temps.length-1];
+        seq +=  1;
   
   
         chrome.downloads.download({
           url: url,
-          filename: `${data.productId}/covers/${filename}`,
+          filename: `${data.productId}/covers/${seq}.${ext}`,
           saveAs : false,
           conflictAction : "overwrite"
         });
       }
     }
     
-
+    seq = 1;
     if(type=='all' || type=='shows'){
     for(var i in data.shows){
 
@@ -60,9 +67,20 @@ chrome.runtime.onInstalled.addListener(function() {
       console.log('filename: '+filename);
 
 
+      const temps = filename.split('.');
+      const ext = filename.split('.')[temps.length-1];
+
+      const lastname = `${seq}.${ext}`;
+
+      if (seq % 10 % 8 == 0){
+        seq += 3;
+      } else {
+        seq +=  1;
+      }
+
       chrome.downloads.download({
         url: url,
-        filename: `${data.productId}/shows/${filename}`,
+        filename: `${data.productId}/shows/${lastname}`,
         saveAs : false,
         conflictAction : "overwrite"
       });
