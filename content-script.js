@@ -31,10 +31,13 @@ document.addEventListener('DOMContentLoaded', function()
         var nodes = $('.tab-content-container ul li');
         nodes.each(function(){ 
             var s = $(this).attr('data-imgs');
-            var data = JSON.parse(s);
-            console.log(data.original);
 
-            images.push(data.original);
+            //视频的话，没地址
+            if(s && s.length>0 && s[0]=='{'){
+                var data = JSON.parse(s);
+                console.log(data.original);
+                images.push(data.original);
+            }
         });
 
     
