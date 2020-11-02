@@ -42,15 +42,16 @@ chrome.runtime.onInstalled.addListener(function() {
 
         const temps = filename.split('.');
         const ext = filename.split('.')[temps.length-1];
-        seq +=  1;
-  
-  
+        
+
         chrome.downloads.download({
           url: url,
           filename: `${data.productId}/covers/${seq}.${ext}`,
           saveAs : false,
           conflictAction : "overwrite"
         });
+
+        seq +=  1;
       }
     }
     
@@ -137,8 +138,8 @@ chrome.runtime.onInstalled.addListener(function() {
   }
 
   var parent = chrome.contextMenus.create({
-    "title": "1688下载器",
-    documentUrlPatterns: ['https://detail.1688.com/*']
+    "title": "速易下",
+    documentUrlPatterns: ['*://detail.1688.com/*', "*://www.aliexpress.com/*", "*://aliexpress.com/*"]
     });  
 
   chrome.contextMenus.create({
@@ -152,26 +153,26 @@ chrome.runtime.onInstalled.addListener(function() {
     console.log('contextMenus are create.');
 });
 
-  chrome.contextMenus.create({
-    id: 'sampleContextMenu2',
-    "parentId": parent, 
-    title: '下载所有描述图片', // %s表示选中的文字
-    contexts: ['all'], // 只有当选中文字时才会出现此右键菜单
-    onclick: genericOnClick2
+//   chrome.contextMenus.create({
+//     id: 'sampleContextMenu2',
+//     "parentId": parent, 
+//     title: '下载所有描述图片', // %s表示选中的文字
+//     contexts: ['all'], // 只有当选中文字时才会出现此右键菜单
+//     onclick: genericOnClick2
     
-  }, function () {
-    console.log('contextMenus are create.');
-});
+//   }, function () {
+//     console.log('contextMenus are create.');
+// });
 
-chrome.contextMenus.create({
-  id: 'sampleContextMenu3',
-  "parentId": parent, 
-  title: '下载所有内容图片', // %s表示选中的文字
-  contexts: ['all'], // 只有当选中文字时才会出现此右键菜单
-  onclick: genericOnClick3
+// chrome.contextMenus.create({
+//   id: 'sampleContextMenu3',
+//   "parentId": parent, 
+//   title: '下载所有内容图片', // %s表示选中的文字
+//   contexts: ['all'], // 只有当选中文字时才会出现此右键菜单
+//   onclick: genericOnClick3
   
-}, function () {
-  console.log('contextMenus are create.');
-});
+// }, function () {
+//   console.log('contextMenus are create.');
+// });
   
 });
