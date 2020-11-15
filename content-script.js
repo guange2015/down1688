@@ -15,9 +15,19 @@ document.addEventListener('DOMContentLoaded', function()
                 //sendResponse({farewell: "goodbye"});
                 var datas = getAllImgAddress(); 
                 sendResponse({farewell: datas});
+        } else if (request.greeting == "get_first_img"){
+            var url = getFirstImg(); 
+            sendResponse({farewell: url});
+        } else if (request.greeting == 'showmsg'){
+            alert(request.msg);
         }
     });
 
+    
+    var getFirstImg = function(){
+        const o = getAllImgAddress();
+        return o["covers"][0];
+    }
 
 
     var getAllImgAddress = function(){

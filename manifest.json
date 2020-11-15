@@ -2,7 +2,10 @@
     "name": "Crawl picture with Aliexpress",
     "version": "1.0",
     "description": "用于抓取1688和速易通产品图片!",
-    "permissions": ["downloads", "contextMenus", "tabs", "storage", "declarativeContent","activeTab"], 
+    "permissions": ["downloads", "contextMenus", "tabs", "storage", "declarativeContent","activeTab", 
+      "webRequest",
+      "webRequestBlocking",
+      "<all_urls>"], 
     "background": {
         "scripts": ["background.js"],
         "persistent": true
