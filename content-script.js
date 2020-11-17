@@ -37,6 +37,7 @@ document.addEventListener('DOMContentLoaded', function()
 
         var images = [];
         var images1 = [];
+        var images2 = [];
         let productID ='';
 
         //判断一下哪个站
@@ -55,6 +56,21 @@ document.addEventListener('DOMContentLoaded', function()
 
                 images.push(s);
             });
+
+            console.log('规格图地址：');
+            var specNodes = $('.product-sku .sku-property-list li img');
+            specNodes.each(function(){ 
+                let s = $(this).attr('src');
+
+                //Erotic-Adult-Sex.jpg_50x50.jpg_.webp
+                console.log(s);
+                if(s.endsWith('_50x50.jpg_.webp')){
+                    s = s.substr(0, s.length-'_50x50.jpg_.webp'.length);
+                }
+
+                images2.push(s);
+            });
+
 
             console.log('正文图地址：');
             var imgs = $('.product-overview img');
@@ -86,6 +102,18 @@ document.addEventListener('DOMContentLoaded', function()
                 }
             });
 
+            //规格图
+            console.log('规格图地址：');
+            var specNodes = $('.widget-custom-container .obj-leading .list-leading li>div');
+            specNodes.each(function(){
+                var s = $(this).attr('data-imgs');
+                //视频的话，没地址
+                if(s && s.length>0 && s[0]=='{'){
+                    var data = JSON.parse(s);
+                    console.log(data.original);
+                    images2.push(data.original);
+                }
+            });
         
 
             
@@ -107,7 +135,7 @@ document.addEventListener('DOMContentLoaded', function()
         }
         
 
-        return {'covers': images, 'shows': images1, 'productId': productID };
+        return {'covers': images, 'specs': images2, 'shows': images1, 'productId': productID };
     }
 
     

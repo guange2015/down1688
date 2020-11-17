@@ -54,6 +54,33 @@ chrome.runtime.onInstalled.addListener(function() {
         seq +=  1;
       }
     }
+
+    seq = 1;
+    if(type=='all' || type=='specs'){
+      for(var i in data.specs){
+        const url = data.specs[i];
+        const ss = url.split('/');
+        const filename = ss[ss.length-1];
+  
+        console.log('url: '+url);
+        console.log('ss: '+ss);
+        console.log('filename: '+filename);
+
+
+        const temps = filename.split('.');
+        const ext = filename.split('.')[temps.length-1];
+        
+
+        chrome.downloads.download({
+          url: url,
+          filename: `${data.productId}/specs/${seq}.${ext}`,
+          saveAs : false,
+          conflictAction : "overwrite"
+        });
+
+        seq +=  1;
+      }
+    }
     
     seq = 1;
     if(type=='all' || type=='shows'){
@@ -86,6 +113,10 @@ chrome.runtime.onInstalled.addListener(function() {
         conflictAction : "overwrite"
       });
     }
+
+
+    
+
   }
 
     
